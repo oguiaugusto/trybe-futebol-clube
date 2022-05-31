@@ -1,0 +1,6 @@
+bcryptjs
+jsonwebtoken
+jwt-decode
+@types/jsonwebtoken
+@types/jwt-decode
+celebrate
