@@ -1,0 +1,17 @@
+import Team from '../../database/models/Team';
+import { ITeamRepository } from './ITeamRepository';
+
+class SequelizeTeamRepository implements ITeamRepository {
+  private client: typeof Team;
+
+  constructor() {
+    this.client = Team;
+  }
+
+  findAll = async () => {
+    const teams = await this.client.findAll();
+    return teams;
+  };
+}
+
+export default SequelizeTeamRepository;
