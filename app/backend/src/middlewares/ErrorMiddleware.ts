@@ -9,7 +9,7 @@ class ErrorMiddleware {
     let status = StatusCodes.INTERNAL_SERVER_ERROR;
     let message = 'Internal Server Error';
 
-    if (err.message || err.status) {
+    if (err.message && err.status) {
       status = err.status;
       message = err.message;
     }
