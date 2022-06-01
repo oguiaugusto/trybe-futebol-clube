@@ -20,6 +20,18 @@ class SequelizeMatchRepository implements IMatchRepository {
 
     return matches as unknown as IMatchWithTeams[];
   };
+
+  findAllByProgressCondition = async (inProgress: boolean) => {
+    const matches = await this.client.findAll({
+      include: [
+        { model: Team, foreignKey: 'teamHome', as: 'teamHome', attributes: ['teamName'] },
+        { model: Team, foreignKey: 'teamAway', as: 'teamAway', attributes: ['teamName'] },
+      ],
+      where: { inProgress },
+    });
+
+    return matches as unknown as IMatchWithTeams[];
+  };
 }
 
 export default SequelizeMatchRepository;
