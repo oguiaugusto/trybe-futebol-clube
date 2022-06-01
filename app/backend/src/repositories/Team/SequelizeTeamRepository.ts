@@ -12,6 +12,11 @@ class SequelizeTeamRepository implements ITeamRepository {
     const teams = await this.client.findAll();
     return teams;
   };
+
+  findById = async (id: number) => {
+    const team = await this.client.findByPk(id);
+    return team;
+  };
 }
 
 export default SequelizeTeamRepository;
