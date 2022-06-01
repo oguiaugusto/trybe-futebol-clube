@@ -1,7 +1,7 @@
 bcryptjs
 jsonwebtoken
 jwt-decode
-@types/jsonwebtoken
+@types/jsonwebtoken@8.5.6
 @types/jwt-decode
 celebrate
 http-status-codes
