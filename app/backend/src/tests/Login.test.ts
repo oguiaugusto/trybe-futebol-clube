@@ -5,8 +5,6 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import User from '../database/models/User';
-import { Response } from 'superagent';
-import { IUser } from '../interfaces/user';
 import { usersMock, usersMockPublic, usersPassword } from './mocks/user';
 import JWTUser from '../utils/JWTUser';
 import Messages from '../schemas/Messages';
