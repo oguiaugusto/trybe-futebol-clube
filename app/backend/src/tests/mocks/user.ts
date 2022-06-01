@@ -36,8 +36,16 @@ const usersMock: IUser[] = [
 
 const usersPassword = ['secret_user123', 'secret_user456', 'secret_admin123'];
 
+const userOutOfDb = {
+  id: 5500,
+  username: 'useroutofdb',
+  role: 'someotherthing',
+  email: 'user.out.of.db@email.com',
+};
+
 export {
   usersMockPublic,
   usersMock,
   usersPassword,
+  userOutOfDb,
 };
