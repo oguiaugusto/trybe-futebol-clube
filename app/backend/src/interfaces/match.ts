@@ -5,7 +5,7 @@ export interface IMatchDTO {
   awayTeamGoals: number;
 }
 
-export interface IMatch {
+export interface IMatch extends IMatchDTO {
   id: number;
   inProgress: boolean;
 }
