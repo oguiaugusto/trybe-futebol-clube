@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { compareSync } from 'bcrypt';
+import { compareSync } from 'bcryptjs';
 import { IUserRepository } from '../../repositories/User/IUserRepository';
 import { IUserCredentials, IUserLogged } from '../../interfaces/user';
 import { IEncrypter } from '../../interfaces/encrypter';
