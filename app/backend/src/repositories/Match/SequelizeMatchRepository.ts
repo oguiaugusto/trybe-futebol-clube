@@ -1,5 +1,5 @@
 import { IMatchRepository } from './IMatchRepository';
-import { IMatchWithTeams } from '../../interfaces/match';
+import { IMatchDTO, IMatchWithTeams } from '../../interfaces/match';
 import Match from '../../database/models/Match';
 import Team from '../../database/models/Team';
 
@@ -31,6 +31,12 @@ class SequelizeMatchRepository implements IMatchRepository {
     });
 
     return matches as unknown as IMatchWithTeams[];
+  };
+
+  create = async ({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatchDTO) => {
+    const match = await this.client.create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
+
+    return match;
   };
 }
 
