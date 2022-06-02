@@ -7,9 +7,15 @@ class MatchFindAllController {
     this.service = service;
   }
 
-  public handle = async (_req: Request, res: Response, next: NextFunction) => {
+  public handle = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const matches = await this.service.handle();
+      let { inProgress } = req.query;
+
+      if (typeof inProgress !== 'string' || inProgress === undefined) {
+        inProgress = undefined;
+      }
+
+      const matches = await this.service.handle(inProgress);
 
       return res.status(StatusCodes.OK).json(matches);
     } catch (error) {
