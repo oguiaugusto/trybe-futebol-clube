@@ -34,7 +34,9 @@ class SequelizeMatchRepository implements IMatchRepository {
   };
 
   create = async ({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatchDTO) => {
-    const match = await this.client.create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
+    const match = await this.client.create({
+      homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress: true,
+    });
 
     return match;
   };
