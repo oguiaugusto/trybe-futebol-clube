@@ -10,7 +10,7 @@ export interface IMatch {
   inProgress: boolean;
 }
 
-export interface IMatchWithTeams extends IMatch {
+export interface IMatchWithTeams extends IMatch, IMatchDTO {
   teamHome: { teamName: string };
   teamAway: { teamName: string };
 }
