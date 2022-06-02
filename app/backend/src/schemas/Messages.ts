@@ -6,6 +6,7 @@ enum Messages {
   TokenInvalid = 'Invalid token',
   NoTokenUser = 'Error finding token user',
   TeamNotFound = 'Team not found',
+  TeamsMustBeRegistered = 'All teams must be registered',
 }
 
 export default Messages;
