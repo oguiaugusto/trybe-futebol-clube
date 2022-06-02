@@ -5,7 +5,7 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import Match from '../database/models/Match';
-import { matchesMock } from './mocks/match';
+import { matchesWithTeamsMock } from './mocks/match';
 import Messages from '../schemas/Messages';
 import { StatusCodes } from 'http-status-codes';
 import { IMatchWithTeams } from '../interfaces/match';
@@ -23,11 +23,11 @@ describe('Endpoint GET /matches', () => {
     });
 
     it('should return an array of matches', async () => {
-      sinon.stub(Match, 'findAll').resolves(matchesMock as unknown as Match[]);
+      sinon.stub(Match, 'findAll').resolves(matchesWithTeamsMock as unknown as Match[]);
       const response = await chaiHttpResponse();
   
       expect(response.status).to.be.equal(StatusCodes.OK);
-      expect(response.body).to.be.eql(matchesMock);
+      expect(response.body).to.be.eql(matchesWithTeamsMock);
     });
 
     it('should return an empty array if there is no match', async () => {
