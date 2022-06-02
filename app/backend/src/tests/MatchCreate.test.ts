@@ -26,7 +26,7 @@ describe('Endpoint POST /matches', () => {
       // so, let's pretend that it's returning 2 teams instead of one, =)
       sinon.stub(Team, 'findByPk').resolves(teamsMock[0] as Team);
 
-      sinon.stub(Match, 'create').resolves(matchesMock[0] as Match);
+      sinon.stub(Match, 'create').resolves(matchesMock[2] as Match);
     });
 
     afterEach(() => {
@@ -35,10 +35,10 @@ describe('Endpoint POST /matches', () => {
     });
 
     it('should return the match object', async () => {
-      const response = await chaiHttpResponse(matchesDTOMock[0]);
+      const response = await chaiHttpResponse(matchesDTOMock[2]);
   
       expect(response.status).to.be.equal(StatusCodes.CREATED);
-      expect(response.body).to.be.eql(matchesMock[0]);
+      expect(response.body).to.be.eql(matchesMock[2]);
     });
   });
 
@@ -70,12 +70,21 @@ describe('Endpoint POST /matches', () => {
       expect(response.body.message).to.include('is required');
     });
 
-    it('should return an error if any of the fields is not a number', async () => {
-      const response = await chaiHttpResponse({ ...matchesDTOMock[0], homeTeam: 'not_a_number' });
+    it('should return an error if number fields are not number', async () => {
+      const response = await chaiHttpResponse({ ...matchesDTOMock[2], homeTeam: 'not_a_number' });
 
       expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
       expect(response.body).to.have.property('message');
       expect(response.body.message).to.include('must be a number');
+    });
+
+    it('should return an error message if inProgress field is passed as false', async () => {
+      const response = await chaiHttpResponse({ ...matchesDTOMock[0], inProgress: false });
+
+      expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
+      expect(response.body).to.have.property('message');
+      expect(response.body.message).to.include('inProgress');
+      expect(response.body.message).to.include('invalid value');
     });
   });
 });

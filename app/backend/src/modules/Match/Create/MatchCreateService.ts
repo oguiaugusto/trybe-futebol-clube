@@ -17,7 +17,9 @@ class MatchCreateService {
     this.repository = repository;
   }
 
-  public handle = async ({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatchDTO) => {
+  public handle = async ({
+    homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
+  }: IMatchDTO) => {
     const existingHomeTeam = await this.teamsRepository.findById(homeTeam);
     const existingAwayTeam = await this.teamsRepository.findById(awayTeam);
 
@@ -26,7 +28,7 @@ class MatchCreateService {
     }
 
     const match = await this.repository.create({
-      homeTeam, awayTeam, homeTeamGoals, awayTeamGoals,
+      homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
     });
 
     return match;

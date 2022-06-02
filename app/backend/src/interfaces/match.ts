@@ -3,11 +3,11 @@ export interface IMatchDTO {
   homeTeamGoals: number;
   awayTeam: number;
   awayTeamGoals: number;
+  inProgress: boolean;
 }
 
 export interface IMatch extends IMatchDTO {
   id: number;
-  inProgress: boolean;
 }
 
 export interface IMatchWithTeams extends IMatch, IMatchDTO {

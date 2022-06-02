@@ -9,8 +9,10 @@ class MatchCreateController {
 
   public handle = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
-      const match = await this.service.handle({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
+      const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = req.body;
+      const match = await this.service.handle({
+        homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
+      });
 
       return res.status(StatusCodes.CREATED).json(match);
     } catch (error) {
