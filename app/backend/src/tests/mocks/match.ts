@@ -1,3 +1,4 @@
+import Match from '../../database/models/Match';
 import { IMatch, IMatchDTO, IMatchWithTeams } from '../../interfaces/match';
 
 const matchesDTOMock: IMatchDTO[] = [
@@ -64,6 +65,29 @@ const matchWithInvalidTeams: IMatchDTO = {
   inProgress: true,
 };
 
+class UpdatableMatchMock {
+  public homeTeam: number;
+  public homeTeamGoals: number;
+  public awayTeam: number;
+  public awayTeamGoals: number;
+  public inProgress: boolean;
+
+  constructor(
+  ) {
+    this.homeTeam = 16; 
+    this.homeTeamGoals = 1; 
+    this.awayTeam = 8; 
+    this.awayTeamGoals = 1; 
+    this.inProgress = true;
+  }
+
+  public update = async (): Promise<this> => {
+    return this;
+  }
+}
+
+const updatableMatchMock = new UpdatableMatchMock() as unknown as Match;
+
 export {
   matchesDTOMock,
   matchesMock,
@@ -71,4 +95,5 @@ export {
   matchesInProgressMock,
   matchesEndedMock,
   matchWithInvalidTeams,
+  updatableMatchMock,
 }
