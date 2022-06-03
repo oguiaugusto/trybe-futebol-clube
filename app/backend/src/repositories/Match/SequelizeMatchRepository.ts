@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { IMatchRepository } from './IMatchRepository';
+import { IMatchRepository, PlaceType } from './IMatchRepository';
 import { IMatchDTO, IMatchUpdatableDTO, IMatchWithTeams } from '../../interfaces/match';
 import Match from '../../database/models/Match';
 import Team from '../../database/models/Team';
@@ -68,10 +68,19 @@ class SequelizeMatchRepository implements IMatchRepository {
     return updatedMatch;
   };
 
-  findEndedMatchesByTeam = async (teamId: number) => {
-    const matches = await this.client.findAll({
-      where: { [Op.or]: [{ homeTeam: teamId }, { awayTeam: teamId }], inProgress: false },
-    });
+  findEndedMatchesByTeam = async (teamId: number, place: PlaceType) => {
+    const baseWhere = { inProgress: false };
+    let where;
+
+    if (place === 'Home') {
+      where = { ...baseWhere, homeTeam: teamId };
+    } else if (place === 'Away') {
+      where = { ...baseWhere, awayTeam: teamId };
+    } else {
+      where = { ...baseWhere, [Op.or]: [{ homeTeam: teamId }, { awayTeam: teamId }] };
+    }
+
+    const matches = await this.client.findAll({ where });
 
     return matches;
   };
