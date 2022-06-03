@@ -80,8 +80,7 @@ class UpdatableMatchMock {
   public awayTeamGoals: number;
   public inProgress: boolean;
 
-  constructor(
-  ) {
+  constructor() {
     this.homeTeam = 16; 
     this.homeTeamGoals = 1; 
     this.awayTeam = 8; 
@@ -96,6 +95,23 @@ class UpdatableMatchMock {
 
 const updatableMatchMock = new UpdatableMatchMock() as unknown as Match;
 
+class UpdatedMatchMock extends UpdatableMatchMock {
+  constructor() {
+    super();
+
+    this.awayTeamGoals = 2;
+  }
+}
+
+const updatedMatchMock = new UpdatedMatchMock() as unknown as Match;
+const expectedUpdatedMatchMock = {
+  homeTeam: updatedMatchMock.homeTeam,
+  homeTeamGoals: updatedMatchMock.homeTeamGoals,
+  awayTeam: updatedMatchMock.awayTeam,
+  awayTeamGoals: updatedMatchMock.awayTeamGoals,
+  inProgress: updatedMatchMock.inProgress,
+};
+
 export {
   matchesDTOMock,
   matchesMock,
@@ -105,4 +121,6 @@ export {
   matchWithInvalidTeams,
   matchWithSameTeam,
   updatableMatchMock,
+  updatedMatchMock,
+  expectedUpdatedMatchMock,
 }
