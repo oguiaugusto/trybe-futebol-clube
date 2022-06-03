@@ -1,8 +1,11 @@
-export interface IMatchDTO {
-  homeTeam: number;
+export interface IMatchUpdatableDTO {
   homeTeamGoals: number;
-  awayTeam: number;
   awayTeamGoals: number;
+}
+
+export interface IMatchDTO extends IMatchUpdatableDTO {
+  homeTeam: number;
+  awayTeam: number;
   inProgress: boolean;
 }
 
