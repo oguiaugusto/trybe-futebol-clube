@@ -14,6 +14,6 @@ export interface IMatch extends IMatchDTO {
 }
 
 export interface IMatchWithTeams extends IMatch, IMatchDTO {
-  teamHome: { teamName: string };
-  teamAway: { teamName: string };
+  teamHome: { teamName: string, id?: number };
+  teamAway: { teamName: string, id?: number };
 }
