@@ -7,7 +7,7 @@ class Schemas {
       awayTeam: Joi.number().required(),
       homeTeamGoals: Joi.number().required(),
       awayTeamGoals: Joi.number().required(),
-      inProgress: Joi.boolean().invalid(false).required(),
+      inProgress: Joi.boolean().invalid(false).optional(),
     });
   }
 }
