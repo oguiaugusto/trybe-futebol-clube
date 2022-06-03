@@ -1,5 +1,5 @@
 import { IMatchRepository } from './IMatchRepository';
-import { IMatchDTO, IMatchWithTeams } from '../../interfaces/match';
+import { IMatchDTO, IMatchUpdatableDTO, IMatchWithTeams } from '../../interfaces/match';
 import Match from '../../database/models/Match';
 import Team from '../../database/models/Team';
 
@@ -54,6 +54,16 @@ class SequelizeMatchRepository implements IMatchRepository {
 
     const endedMatch = await match.update({ inProgress: false });
     return endedMatch;
+  };
+
+  updateGoals = async (match: Match, { homeTeamGoals, awayTeamGoals }: IMatchUpdatableDTO) => {
+    // I'm creating this helper because otherwise,
+    // i'll have to set this finish method as static =)
+    const helper = () => typeof this.client;
+    helper();
+
+    const updatedMatch = await match.update({ homeTeamGoals, awayTeamGoals });
+    return updatedMatch;
   };
 }
 

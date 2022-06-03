@@ -1,5 +1,5 @@
 import Match from '../../database/models/Match';
-import { IMatch, IMatchDTO, IMatchWithTeams } from '../../interfaces/match';
+import { IMatch, IMatchDTO, IMatchUpdatableDTO, IMatchWithTeams } from '../../interfaces/match';
 
 export interface IMatchRepository {
   findAll: () => Promise<IMatchWithTeams[]>;
@@ -8,4 +8,5 @@ export interface IMatchRepository {
   // findById returns Match instead of IMatch because i'll use this return on finish service
   findById: (id: number) => Promise<Match | null>;
   finish: (match: Match) => Promise<IMatch>;
+  updateGoals: (match: Match, matchGoals: IMatchUpdatableDTO) => Promise<IMatch>;
 }
