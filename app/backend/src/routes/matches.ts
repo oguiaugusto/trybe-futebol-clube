@@ -3,10 +3,11 @@ import { celebrate, Segments } from 'celebrate';
 import matchCreateController from '../modules/Match/Create';
 import matchFindAllController from '../modules/Match/FindAll';
 import Schemas from '../schemas/joi';
+import matchFinishController from '../modules/Match/Finish';
 
-const matchsRouter = Router();
+const matchesRouter = Router();
 
-matchsRouter
+matchesRouter
   .route('/')
   .get(matchFindAllController.handle)
   .post(
@@ -14,4 +15,8 @@ matchsRouter
     matchCreateController.handle,
   );
 
-export default matchsRouter;
+matchesRouter
+  .route('/:id/finish')
+  .patch(matchFinishController.handle);
+
+export default matchesRouter;
