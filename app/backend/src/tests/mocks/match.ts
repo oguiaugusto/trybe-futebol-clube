@@ -65,6 +65,14 @@ const matchWithInvalidTeams: IMatchDTO = {
   inProgress: true,
 };
 
+const matchWithSameTeam: IMatchDTO = {
+  homeTeam: 1,
+  awayTeam: 1,
+  awayTeamGoals: 0,
+  homeTeamGoals: 0,
+  inProgress: true,
+};
+
 class UpdatableMatchMock {
   public homeTeam: number;
   public homeTeamGoals: number;
@@ -95,5 +103,6 @@ export {
   matchesInProgressMock,
   matchesEndedMock,
   matchWithInvalidTeams,
+  matchWithSameTeam,
   updatableMatchMock,
 }

@@ -27,6 +27,10 @@ class MatchCreateService {
       throw new RequestError(StatusCodes.NOT_FOUND, Messages.TeamsMustBeRegistered);
     }
 
+    if (existingHomeTeam.id === existingAwayTeam.id) {
+      throw new RequestError(StatusCodes.UNAUTHORIZED, Messages.NoEqualTeams);
+    }
+
     const match = await this.repository.create({
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
     });

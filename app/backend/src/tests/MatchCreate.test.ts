@@ -5,7 +5,7 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import Match from '../database/models/Match';
-import { matchesDTOMock, matchesMock, matchWithInvalidTeams } from './mocks/match';
+import { matchesDTOMock, matchesMock, matchWithInvalidTeams, matchWithSameTeam } from './mocks/match';
 import { teamsMock } from './mocks/team';
 import Messages from '../schemas/Messages';
 import { StatusCodes } from 'http-status-codes';
@@ -19,12 +19,14 @@ describe('Endpoint POST /matches', () => {
   const chaiHttpResponse = async (body?: string | object) => (
     chai.request(app).post('/matches').send(body)
   );
+  const mockedTeam = sinon.stub(Team, 'findByPk');
 
   describe('On success', () => {
     beforeEach(async () => {
       // Sinon's not letting me stub 2 different promises of the same function
       // so, let's pretend that it's returning 2 teams instead of one, =)
-      sinon.stub(Team, 'findByPk').resolves(teamsMock[0] as Team);
+      mockedTeam.onFirstCall().resolves(teamsMock[0] as Team);
+      mockedTeam.onSecondCall().resolves(teamsMock[1] as Team);
 
       sinon.stub(Match, 'create').resolves(matchesMock[2] as Match);
     });
@@ -44,13 +46,13 @@ describe('Endpoint POST /matches', () => {
 
   describe('On fail', () => {
     beforeEach(async () => {
-      // Just as the success mock, this won't "find", both teams...
-      sinon.stub(Team, 'findByPk').resolves(null);
+      mockedTeam.onFirstCall().resolves(teamsMock[0] as Team);
+      mockedTeam.onSecondCall().resolves(teamsMock[1] as Team);
+
       sinon.stub(Match, 'create').resolves(undefined);
     });
 
     afterEach(() => {
-      (Team.findByPk as sinon.SinonStub).restore();
       (Match.create as sinon.SinonStub).restore();
     });
 
@@ -60,6 +62,18 @@ describe('Endpoint POST /matches', () => {
       expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
       expect(response.body).to.have.property('message');
       expect(response.body.message).to.be.equal(Messages.TeamsMustBeRegistered);
+    });
+
+    it('should return an error message if both teams are the same', async () => {
+      mockedTeam.restore();
+      mockedTeam.onFirstCall().resolves(teamsMock[0] as Team);
+      mockedTeam.onSecondCall().resolves(teamsMock[0] as Team);
+
+      const response = await chaiHttpResponse(matchWithSameTeam);
+
+      expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+      expect(response.body).to.have.property('message');
+      expect(response.body.message).to.be.equal(Messages.NoEqualTeams);
     });
 
     it('should return an error if any of the fields is not passed', async () => {
