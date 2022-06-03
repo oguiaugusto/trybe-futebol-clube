@@ -10,6 +10,13 @@ class Schemas {
       inProgress: Joi.boolean().invalid(false).optional(),
     });
   }
+
+  static get matchGoalsPatch() {
+    return Joi.object().keys({
+      homeTeamGoals: Joi.number().required(),
+      awayTeamGoals: Joi.number().required(),
+    });
+  }
 }
 
 export default Schemas;
