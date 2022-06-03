@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { IMatchRepository } from './IMatchRepository';
 import { IMatchDTO, IMatchUpdatableDTO, IMatchWithTeams } from '../../interfaces/match';
 import Match from '../../database/models/Match';
@@ -21,11 +22,12 @@ class SequelizeMatchRepository implements IMatchRepository {
     return matches as unknown as IMatchWithTeams[];
   };
 
-  findAllByProgressCondition = async (inProgress: boolean) => {
+  findAllByProgressCondition = async (inProgress: boolean, includeAllTeamAttributes?: boolean) => {
+    const attributes = includeAllTeamAttributes ? ['teamName', 'id'] : ['teamName'];
     const matches = await this.client.findAll({
       include: [
-        { model: Team, foreignKey: 'teamHome', as: 'teamHome', attributes: ['teamName'] },
-        { model: Team, foreignKey: 'teamAway', as: 'teamAway', attributes: ['teamName'] },
+        { model: Team, foreignKey: 'teamHome', as: 'teamHome', attributes },
+        { model: Team, foreignKey: 'teamAway', as: 'teamAway', attributes },
       ],
       where: { inProgress },
     });
@@ -64,6 +66,14 @@ class SequelizeMatchRepository implements IMatchRepository {
 
     const updatedMatch = await match.update({ homeTeamGoals, awayTeamGoals });
     return updatedMatch;
+  };
+
+  findEndedMatchesByTeam = async (teamId: number) => {
+    const matches = await this.client.findAll({
+      where: { [Op.or]: [{ homeTeam: teamId }, { awayTeam: teamId }], inProgress: false },
+    });
+
+    return matches;
   };
 }
 
