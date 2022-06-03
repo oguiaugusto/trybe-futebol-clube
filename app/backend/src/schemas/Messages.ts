@@ -6,7 +6,6 @@ enum Messages {
   TokenInvalid = 'Invalid token',
   NoTokenUser = 'Error finding token user',
   TeamNotFound = 'There is no team with such id!',
-  TeamsMustBeRegistered = 'All teams must be registered',
   MatchNotFound = 'There is no match with such id!',
   MatchAlreadyEnded = 'Match is already finished',
   Finished = 'Finished',

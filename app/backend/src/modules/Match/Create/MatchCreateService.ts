@@ -24,7 +24,7 @@ class MatchCreateService {
     const existingAwayTeam = await this.teamsRepository.findById(awayTeam);
 
     if (!existingHomeTeam || !existingAwayTeam) {
-      throw new RequestError(StatusCodes.NOT_FOUND, Messages.TeamsMustBeRegistered);
+      throw new RequestError(StatusCodes.NOT_FOUND, Messages.TeamNotFound);
     }
 
     if (existingHomeTeam.id === existingAwayTeam.id) {

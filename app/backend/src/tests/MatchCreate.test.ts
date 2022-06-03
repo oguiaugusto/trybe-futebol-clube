@@ -61,7 +61,7 @@ describe('Endpoint POST /matches', () => {
 
       expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
       expect(response.body).to.have.property('message');
-      expect(response.body.message).to.be.equal(Messages.TeamsMustBeRegistered);
+      expect(response.body.message).to.be.equal(Messages.TeamNotFound);
     });
 
     it('should return an error message if both teams are the same', async () => {
