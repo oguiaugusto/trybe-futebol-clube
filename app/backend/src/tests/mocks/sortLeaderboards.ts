@@ -18,7 +18,7 @@ const corinthians: ILeaderboard = {
   totalPoints: 8,
   goalsBalance: 5,
   goalsFavor: 8,
-  goalsOwn: 3,
+  goalsOwn: 2,
 };
 const santos: ILeaderboard = {
   ...rawOtherInfos,
@@ -27,7 +27,7 @@ const santos: ILeaderboard = {
   totalPoints: 7,
   goalsBalance: 4,
   goalsFavor: 6,
-  goalsOwn: 2,
+  goalsOwn: 3,
 };
 
 export {

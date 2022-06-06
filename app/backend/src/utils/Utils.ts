@@ -12,7 +12,7 @@ class Utils {
         if (a.totalVictories === b.totalVictories) {
           if (a.goalsBalance === b.goalsBalance) {
             if (a.goalsFavor === b.goalsFavor) {
-              return b.goalsOwn - a.goalsOwn;
+              return a.goalsOwn - b.goalsOwn;
             }
             return b.goalsFavor - a.goalsFavor;
           }

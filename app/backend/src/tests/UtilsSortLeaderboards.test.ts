@@ -45,9 +45,9 @@ describe('Test Utils.sortLeaderboard', () => {
   });
 
   it('should return sorted leaderboard by goals owned if total points, victories, goals balance and goals in favor are the same', () => {
-    const team1: ILeaderboard = { ...palmeiras, totalPoints: 10, totalVictories: 5, goalsBalance: 9, goalsOwn: 1 };
-    const team2: ILeaderboard = { ...corinthians, totalPoints: 10, totalVictories: 5, goalsBalance: 9, goalsOwn: 1 };
-    const team3: ILeaderboard = { ...santos, totalPoints: 10, totalVictories: 5, goalsBalance: 9, goalsOwn: 1 };
+    const team1: ILeaderboard = { ...palmeiras, totalPoints: 10, totalVictories: 5, goalsBalance: 9, goalsFavor: 2 };
+    const team2: ILeaderboard = { ...corinthians, totalPoints: 10, totalVictories: 5, goalsBalance: 9, goalsFavor: 2 };
+    const team3: ILeaderboard = { ...santos, totalPoints: 10, totalVictories: 5, goalsBalance: 9, goalsFavor: 2 };
 
     const sortedLeaderboard = Utils.sortLeaderboard([team2, team3, team1]);
 
