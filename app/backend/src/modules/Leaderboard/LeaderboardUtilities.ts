@@ -1,5 +1,5 @@
 import { ITeam } from '../../interfaces/team';
-import { IMatchWithTeams } from '../../interfaces/match';
+import { IMatch, IMatchWithTeams } from '../../interfaces/match';
 
 class LeaderboardUtilities {
   public static getFilteredTeams(matches: IMatchWithTeams[], place: 'Home' | 'Away') {
@@ -17,6 +17,23 @@ class LeaderboardUtilities {
     console.log(filteredTeams);
 
     return filteredTeams;
+  }
+
+  public static getMatchPoints(match: IMatch, teamId: number) {
+    let teamGoals: number;
+    let rivalGoals: number;
+
+    if (match.homeTeam === teamId) {
+      teamGoals = match.homeTeamGoals;
+      rivalGoals = match.awayTeamGoals;
+    } else {
+      teamGoals = match.awayTeamGoals;
+      rivalGoals = match.homeTeamGoals;
+    }
+
+    if (teamGoals > rivalGoals) return 3;
+    if (teamGoals === rivalGoals) return 1;
+    return 0;
   }
 }
 

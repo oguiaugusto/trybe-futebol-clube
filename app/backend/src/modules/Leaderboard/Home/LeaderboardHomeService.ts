@@ -31,30 +31,13 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
     return homeTeams;
   };
 
-  private getMatchPoints = (match: IMatch, teamId: number) => {
-    let teamGoals: number;
-    let rivalGoals: number;
-
-    if (match.homeTeam === teamId) {
-      teamGoals = match.homeTeamGoals;
-      rivalGoals = match.awayTeamGoals;
-    } else {
-      teamGoals = match.awayTeamGoals;
-      rivalGoals = match.homeTeamGoals;
-    }
-
-    if (teamGoals > rivalGoals) return 3;
-    if (teamGoals === rivalGoals) return 1;
-    return 0;
-  };
-
   private getTotals = (matches: IMatch[], teamId: number) => {
     const matchPointsEqualsToThanReturn = (match: IMatch, eqNumber: number, rtNum: number) => (
-      this.getMatchPoints(match, teamId) === eqNumber ? rtNum : 0
+      LeaderboardUtilities.getMatchPoints(match, teamId) === eqNumber ? rtNum : 0
     );
     const games = matches.length;
     const points = matches.reduce((total: number, match: IMatch) => (
-      total + this.getMatchPoints(match, teamId)
+      total + LeaderboardUtilities.getMatchPoints(match, teamId)
     ), 0);
     const victories = matches.reduce((total: number, match: IMatch) => (
       total + matchPointsEqualsToThanReturn(match, 3, 1)
