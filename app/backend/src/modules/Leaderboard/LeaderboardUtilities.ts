@@ -1,5 +1,6 @@
 import { ITeam } from '../../interfaces/team';
 import { IMatch, IMatchWithTeams } from '../../interfaces/match';
+import { ILeaderboard } from '../../interfaces/leaderboard';
 
 interface ITotals {
   games: number;
@@ -77,6 +78,28 @@ class LeaderboardUtilities {
     const balance = favor - own;
 
     return { favor, own, balance } as IGoals;
+  }
+
+  public static getEfficiency(totalPoints: number, totalGames: number) {
+    const efficiency = (totalPoints / (totalGames * 3)) * 100;
+    return parseFloat(efficiency.toFixed(2));
+  }
+
+  public static setUpLeaderboard(name: string, totals: ITotals, goals: IGoals) {
+    const efficiency = LeaderboardUtilities.getEfficiency(totals.points, totals.games);
+
+    return {
+      name,
+      totalPoints: totals.points,
+      totalGames: totals.games,
+      totalVictories: totals.victories,
+      totalDraws: totals.draws,
+      totalLosses: totals.losses,
+      goalsFavor: goals.favor,
+      goalsOwn: goals.own,
+      goalsBalance: goals.balance,
+      efficiency,
+    } as ILeaderboard;
   }
 }
 

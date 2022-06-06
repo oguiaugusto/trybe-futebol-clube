@@ -8,16 +8,6 @@ export interface ILeaderboardHomeService {
   handle: () => Promise<ILeaderboard[]>;
 }
 
-interface ITotals {
-  games: number;
-  points: number;
-  victories: number;
-  draws: number;
-  losses: number;
-}
-
-interface IGoals { favor: number; own: number; balance: number; }
-
 class LeaderboardHomeService implements ILeaderboardHomeService {
   constructor(private repository: IMatchRepository) {
     this.repository = repository;
@@ -31,28 +21,6 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
     return homeTeams;
   };
 
-  private getEfficiency = (totalPoints: number, totalGames: number) => {
-    const efficiency = (totalPoints / (totalGames * 3)) * 100;
-    return parseFloat(efficiency.toFixed(2));
-  };
-
-  private setUpLeaderboard = (name: string, totals: ITotals, goals: IGoals) => {
-    const efficiency = this.getEfficiency(totals.points, totals.games);
-
-    return {
-      name,
-      totalPoints: totals.points,
-      totalGames: totals.games,
-      totalVictories: totals.victories,
-      totalDraws: totals.draws,
-      totalLosses: totals.losses,
-      goalsFavor: goals.favor,
-      goalsOwn: goals.own,
-      goalsBalance: goals.balance,
-      efficiency,
-    } as ILeaderboard;
-  };
-
   public handle = async () => {
     const homeTeams = await this.getHomeTeams();
     const leaderboardPromises = homeTeams.map(
@@ -61,7 +29,7 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
         const totals = LeaderboardUtilities.getTotals(matches, id);
         const goals = LeaderboardUtilities.getGoals(matches, id);
 
-        return this.setUpLeaderboard(teamName, totals, goals);
+        return LeaderboardUtilities.setUpLeaderboard(teamName, totals, goals);
       },
     );
 
