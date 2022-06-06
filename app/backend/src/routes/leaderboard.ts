@@ -1,8 +1,13 @@
 import { Router } from 'express';
+import leaderboardController from '../modules/Leaderboard/Index';
 import leaderboardAwayController from '../modules/Leaderboard/Away';
 import leaderboardHomeController from '../modules/Leaderboard/Home';
 
 const leaderboardRouter = Router();
+
+leaderboardRouter
+  .route('/')
+  .get(leaderboardController.handle);
 
 leaderboardRouter
   .route('/home')
