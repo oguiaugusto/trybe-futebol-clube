@@ -1,8 +1,8 @@
 import { IMatchRepository } from '../../../repositories/Match/IMatchRepository';
 import { ILeaderboard } from '../../../interfaces/leaderboard';
 import { IMatch } from '../../../interfaces/match';
-import { ITeam } from '../../../interfaces/team';
 import Utils from '../../../utils/Utils';
+import LeaderboardUtilities from '../LeaderboardUtilities';
 
 export interface ILeaderboardHomeService {
   handle: () => Promise<ILeaderboard[]>;
@@ -26,15 +26,7 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
   private getHomeTeams = async () => {
     const matches = await this.repository.findAllByProgressCondition(false, true);
 
-    const homeTeamNames: string[] = [];
-    const homeTeams: ITeam[] = [];
-
-    matches.forEach(({ teamHome: { id, teamName } }) => {
-      if (!homeTeamNames.includes(teamName) && id) {
-        homeTeams.push({ id, teamName });
-        homeTeamNames.push(teamName);
-      }
-    });
+    const homeTeams = LeaderboardUtilities.getFilteredTeams(matches, 'Home');
 
     return homeTeams;
   };
