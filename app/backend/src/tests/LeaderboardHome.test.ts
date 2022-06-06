@@ -12,6 +12,8 @@ import { StatusCodes } from 'http-status-codes';
 import allByProgressCondition from './mocks/leaderboard/homeAllByProgressCondition';
 import endedMatchesByTeam from './mocks/leaderboard/homeEndedMatchesByTeam';
 import expectedLeaderBoard from './mocks/leaderboard/homeLeaderboard';
+import { FindOptions } from 'sequelize/types';
+import { Model } from 'sequelize/types';
 
 chai.use(chaiHttp);
 
@@ -19,10 +21,11 @@ const { expect } = chai;
 
 describe('Endpoint GET /leaderboard/home', () => {
   const chaiHttpResponse = async () => chai.request(app).get('/leaderboard/home');
-  const mockedMatch = sinon.stub(Match, 'findAll');
+  let mockedMatch: sinon.SinonStub<[options?: FindOptions<any>], Promise<Model<any, any>[]>>;
 
   describe('On success', () => {
     beforeEach(async () => {
+      mockedMatch = sinon.stub(Match, 'findAll');
       mockedMatch.onCall(0).resolves(allByProgressCondition as unknown as Match[]);
       mockedMatch.onCall(1).resolves(endedMatchesByTeam[0] as Match[]);
       mockedMatch.onCall(2).resolves(endedMatchesByTeam[1] as Match[]);
@@ -31,7 +34,7 @@ describe('Endpoint GET /leaderboard/home', () => {
     });
 
     afterEach(() => {
-      (Match.findAll as sinon.SinonStub).restore();
+      mockedMatch.restore();
     });
 
     it('should return the match object', async () => {
