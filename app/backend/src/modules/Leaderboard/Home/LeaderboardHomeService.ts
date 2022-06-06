@@ -31,27 +31,6 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
     return homeTeams;
   };
 
-  private getTotals = (matches: IMatch[], teamId: number) => {
-    const matchPointsEqualsToThanReturn = (match: IMatch, eqNumber: number, rtNum: number) => (
-      LeaderboardUtilities.getMatchPoints(match, teamId) === eqNumber ? rtNum : 0
-    );
-    const games = matches.length;
-    const points = matches.reduce((total: number, match: IMatch) => (
-      total + LeaderboardUtilities.getMatchPoints(match, teamId)
-    ), 0);
-    const victories = matches.reduce((total: number, match: IMatch) => (
-      total + matchPointsEqualsToThanReturn(match, 3, 1)
-    ), 0);
-    const draws = matches.reduce((total: number, match: IMatch) => (
-      total + matchPointsEqualsToThanReturn(match, 1, 1)
-    ), 0);
-    const losses = matches.reduce((total: number, match) => (
-      total + matchPointsEqualsToThanReturn(match, 0, 1)
-    ), 0);
-
-    return { games, points, victories, draws, losses } as ITotals;
-  };
-
   private getGoals = (matches: IMatch[], teamId: number) => {
     const favor = matches.reduce((total: number, match: IMatch) => (
       total + (match.homeTeam === teamId ? match.homeTeamGoals : match.awayTeamGoals)
@@ -91,7 +70,7 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
     const leaderboardPromises = homeTeams.map(
       async ({ id, teamName }) => {
         const matches: IMatch[] = await this.repository.findEndedMatchesByTeam(id, 'Home');
-        const totals = this.getTotals(matches, id);
+        const totals = LeaderboardUtilities.getTotals(matches, id);
         const goals = this.getGoals(matches, id);
 
         return this.setUpLeaderboard(teamName, totals, goals);
