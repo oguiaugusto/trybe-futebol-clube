@@ -9,6 +9,8 @@ interface ITotals {
   losses: number;
 }
 
+interface IGoals { favor: number; own: number; balance: number; }
+
 class LeaderboardUtilities {
   public static getFilteredTeams(matches: IMatchWithTeams[], place: 'Home' | 'Away') {
     const filteredTeamNames: string[] = [];
@@ -63,6 +65,18 @@ class LeaderboardUtilities {
     ), 0);
 
     return { games, points, victories, draws, losses } as ITotals;
+  }
+
+  public static getGoals(matches: IMatch[], teamId: number) {
+    const favor = matches.reduce((total: number, match: IMatch) => (
+      total + (match.homeTeam === teamId ? match.homeTeamGoals : match.awayTeamGoals)
+    ), 0);
+    const own = matches.reduce((total: number, match: IMatch) => (
+      total + (match.homeTeam === teamId ? match.awayTeamGoals : match.homeTeamGoals)
+    ), 0);
+    const balance = favor - own;
+
+    return { favor, own, balance } as IGoals;
   }
 }
 

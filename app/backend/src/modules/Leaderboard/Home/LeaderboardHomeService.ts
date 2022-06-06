@@ -31,18 +31,6 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
     return homeTeams;
   };
 
-  private getGoals = (matches: IMatch[], teamId: number) => {
-    const favor = matches.reduce((total: number, match: IMatch) => (
-      total + (match.homeTeam === teamId ? match.homeTeamGoals : match.awayTeamGoals)
-    ), 0);
-    const own = matches.reduce((total: number, match: IMatch) => (
-      total + (match.homeTeam === teamId ? match.awayTeamGoals : match.homeTeamGoals)
-    ), 0);
-    const balance = favor - own;
-
-    return { favor, own, balance } as IGoals;
-  };
-
   private getEfficiency = (totalPoints: number, totalGames: number) => {
     const efficiency = (totalPoints / (totalGames * 3)) * 100;
     return parseFloat(efficiency.toFixed(2));
@@ -71,7 +59,7 @@ class LeaderboardHomeService implements ILeaderboardHomeService {
       async ({ id, teamName }) => {
         const matches: IMatch[] = await this.repository.findEndedMatchesByTeam(id, 'Home');
         const totals = LeaderboardUtilities.getTotals(matches, id);
-        const goals = this.getGoals(matches, id);
+        const goals = LeaderboardUtilities.getGoals(matches, id);
 
         return this.setUpLeaderboard(teamName, totals, goals);
       },
