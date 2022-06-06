@@ -25,7 +25,6 @@ class LeaderboardUtilities {
         filteredTeamNames.push(teamType.teamName);
       }
     });
-    console.log(filteredTeams);
 
     return filteredTeams;
   }
