@@ -47,36 +47,42 @@ class LeaderboardUtilities {
   }
 
   public static getTotals(matches: IMatch[], teamId: number) {
-    const matchPointsEqualsToThanReturn = (match: IMatch, eqNumber: number, rtNum: number) => (
-      LeaderboardUtilities.getMatchPoints(match, teamId) === eqNumber ? rtNum : 0
-    );
-    const games = matches.length;
-    const points = matches.reduce((total: number, match: IMatch) => (
-      total + LeaderboardUtilities.getMatchPoints(match, teamId)
-    ), 0);
-    const victories = matches.reduce((total: number, match: IMatch) => (
-      total + matchPointsEqualsToThanReturn(match, 3, 1)
-    ), 0);
-    const draws = matches.reduce((total: number, match: IMatch) => (
-      total + matchPointsEqualsToThanReturn(match, 1, 1)
-    ), 0);
-    const losses = matches.reduce((total: number, match) => (
-      total + matchPointsEqualsToThanReturn(match, 0, 1)
-    ), 0);
+    const totals: ITotals = { games: matches.length, points: 0, victories: 0, draws: 0, losses: 0 };
 
-    return { games, points, victories, draws, losses } as ITotals;
+    matches.forEach((match) => {
+      const matchPoints = this.getMatchPoints(match, teamId);
+
+      if (matchPoints === 3) {
+        totals.points += 3;
+        totals.victories += 1;
+      }
+      if (matchPoints === 1) {
+        totals.points += 1;
+        totals.draws += 1;
+      }
+      if (matchPoints === 0) {
+        totals.losses += 1;
+      }
+    });
+
+    return totals;
   }
 
   public static getGoals(matches: IMatch[], teamId: number) {
-    const favor = matches.reduce((total: number, match: IMatch) => (
-      total + (match.homeTeam === teamId ? match.homeTeamGoals : match.awayTeamGoals)
-    ), 0);
-    const own = matches.reduce((total: number, match: IMatch) => (
-      total + (match.homeTeam === teamId ? match.awayTeamGoals : match.homeTeamGoals)
-    ), 0);
-    const balance = favor - own;
+    const goals = { favor: 0, own: 0, balance: 0 };
 
-    return { favor, own, balance } as IGoals;
+    matches.forEach((match) => {
+      if (match.homeTeam === teamId) {
+        goals.favor += match.homeTeamGoals;
+        goals.own += match.awayTeamGoals;
+      } else {
+        goals.favor += match.awayTeamGoals;
+        goals.own += match.homeTeamGoals;
+      }
+    });
+    goals.balance = goals.favor - goals.own;
+
+    return goals;
   }
 
   public static getEfficiency(totalPoints: number, totalGames: number) {
